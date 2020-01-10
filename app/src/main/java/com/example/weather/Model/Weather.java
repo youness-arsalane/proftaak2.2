@@ -1,10 +1,10 @@
 package com.example.weather.Model;
 
 public class Weather {
-    private int id ;
-    private String main ;
-    private String description ;
-    private String icon ;
+    private int id;
+    private String main;
+    private String description;
+    private String icon;
 
     public int getId() {
         return id;

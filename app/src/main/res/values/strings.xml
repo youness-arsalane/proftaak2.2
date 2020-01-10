@@ -3,4 +3,10 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Today Weather demo</string>
+    <string name="sunset">Zonsondergang:</string>
+    <string name="sunrise">Zonsopgang:</string>
+    <string name="humidity">Luchtvochtigheid:</string>
+    <string name="pressure">Luchtdruk:</string>
+    <string name="wind">Wind:</string>
+    <string name="geo_coord">Coördinaten:</string>
 </resources>

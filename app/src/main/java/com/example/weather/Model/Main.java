@@ -1,15 +1,13 @@
 package com.example.weather.Model;
 
 public class Main {
-    private double temp ;
-    private int pressure ;
-    private int humidity ;
-    private double temp_min ;
-    private double temp_max ;
-    public Main()
-    {
+    private double temp;
+    private double feels_like;
+    private double temp_min;
+    private double temp_max;
+    private int humidity;
+    private int pressure;
 
-    }
     public double getTemp() {
         return temp;
     }
@@ -18,20 +16,12 @@ public class Main {
         this.temp = temp;
     }
 
-    public int getPressure() {
-        return pressure;
+    public double getFeels_like() {
+        return feels_like;
     }
 
-    public void setPressure(int pressure) {
-        this.pressure = pressure;
-    }
-
-    public int getHumidity() {
-        return humidity;
-    }
-
-    public void setHumidity(int humidity) {
-        this.humidity = humidity;
+    public void setFeels_like(double feels_like) {
+        this.feels_like = feels_like;
     }
 
     public double getTemp_min() {
@@ -48,5 +38,21 @@ public class Main {
 
     public void setTemp_max(double temp_max) {
         this.temp_max = temp_max;
+    }
+
+    public int getPressure() {
+        return pressure;
+    }
+
+    public void setPressure(int pressure) {
+        this.pressure = pressure;
+    }
+
+    public int getHumidity() {
+        return humidity;
+    }
+
+    public void setHumidity(int humidity) {
+        this.humidity = humidity;
     }
 }

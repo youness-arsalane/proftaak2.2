@@ -1,8 +1,10 @@
 package com.example.weather.Model;
 
+import androidx.annotation.NonNull;
+
 public class Coord {
-    public double lon ;
-    public double lat ;
+    public double lon;
+    public double lat;
 
     public double getLon() {
         return lon;
@@ -20,8 +22,9 @@ public class Coord {
         this.lat = lat;
     }
 
+    @NonNull
     @Override
     public String toString() {
-        return new StringBuilder("[").append(this.lat).append(',').append(this.lon).append(']').toString();
+        return "lat: " + this.lat + ", lon: " + this.lon;
     }
 }

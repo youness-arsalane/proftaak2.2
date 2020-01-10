@@ -1,6 +1,6 @@
 package com.example.weather.Retrofit;
 
-import com.google.gson.Gson;
+import android.util.Log;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -8,11 +8,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
     private static Retrofit instance;
-    public static Retrofit getInstance()
-    {
-        if(instance==null)
-            instance=new Retrofit.Builder().baseUrl("http://api.openweathermap.org/data/2.5/").addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create()).build();
+
+    public static Retrofit getInstance() {
+        if (instance == null) {
+            instance = new Retrofit
+                    .Builder()
+                    .baseUrl("http://api.openweathermap.org/data/2.5/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build();
+        }
+
+        Log.d("TEEHEE", "getInstance: " + GsonConverterFactory.create());
+        Log.d("TEEHEE", "getInstance: " + RxJava2CallAdapterFactory.create());
+
         return instance;
     }
 }

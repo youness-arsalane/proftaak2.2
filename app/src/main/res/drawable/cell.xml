@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-
     <item>
         <shape android:shape="rectangle">
             <stroke android:color="@android:color/black"
-                android:width="1dp"/>
+                android:width="0dp"/>
         </shape>
     </item>
     <item
@@ -13,7 +12,7 @@
         android:right="1dp"
         >
         <shape android:shape="rectangle">
-            <solid android:color="@android:color/white"></solid>
+            <solid android:color="@android:color/white" />
         </shape>
     </item>
 </selector>
