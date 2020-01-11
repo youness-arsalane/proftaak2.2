@@ -19,9 +19,6 @@ public class RetrofitClient {
                     .build();
         }
 
-        Log.d("TEEHEE", "getInstance: " + GsonConverterFactory.create());
-        Log.d("TEEHEE", "getInstance: " + RxJava2CallAdapterFactory.create());
-
         return instance;
     }
 }

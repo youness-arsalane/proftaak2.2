@@ -43,10 +43,20 @@ public class TodayWeatherFragment extends Fragment {
     private CompositeDisposable compositeDisposable;
     private IOpenWeatherMap mServices;
 
+    private static TodayWeatherFragment instance;
+
     public TodayWeatherFragment() {
         compositeDisposable = new CompositeDisposable();
         Retrofit retrofit = RetrofitClient.getInstance();
         mServices = retrofit.create(IOpenWeatherMap.class);
+    }
+
+    public static TodayWeatherFragment getInstance() {
+        if (instance == null) {
+            instance = new TodayWeatherFragment();
+        }
+
+        return instance;
     }
 
     @Override
