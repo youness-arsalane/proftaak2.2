@@ -55,8 +55,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private LocationRequest locationRequest;
 
     private float currentDegree = 0f;
-    private SensorManager mSensorManager;
     TextView tvHeading;
+
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private Sensor mMagnetometer;
+
+    private float[] mLastAccelerometer = new float[3];
+    private float[] mLastMagnetometer = new float[3];
+    private boolean mLastAccelerometerSet = false;
+    private boolean mLastMagnetometerSet = false;
+
+    private float[] mR = new float[9];
+    private float[] mOrientation = new float[3];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -106,7 +119,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onResume() {
         super.onResume();
-        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR), SensorManager.SENSOR_DELAY_NORMAL);
+
+        mLastAccelerometerSet = false;
+        mLastMagnetometerSet = false;
+        mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+        mSensorManager.registerListener(this, mMagnetometer, SensorManager.SENSOR_DELAY_UI);
     }
 
     @Override
@@ -163,13 +180,31 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         viewPager = findViewById(R.id.viewpager);
 
         if (viewPager.getAdapter() != null) {
+
+            float degree = 0;
+            if (sensorEvent.sensor == mAccelerometer) {
+                System.arraycopy(sensorEvent.values, 0, mLastAccelerometer, 0, sensorEvent.values.length);
+                mLastAccelerometerSet = true;
+            } else if (sensorEvent.sensor == mMagnetometer) {
+                System.arraycopy(sensorEvent.values, 0, mLastMagnetometer, 0, sensorEvent.values.length);
+                mLastMagnetometerSet = true;
+            }
+            if (mLastAccelerometerSet && mLastMagnetometerSet) {
+                SensorManager.getRotationMatrix(mR, null, mLastAccelerometer, mLastMagnetometer);
+                SensorManager.getOrientation(mR, mOrientation);
+
+                double degreeDouble = ( Math.toDegrees( mOrientation[0] ) + 360 ) % 360;
+                degree = (float) degreeDouble;
+            }
+
+
             CompassFragment compassFragment = (CompassFragment) ((ViewPagerAdapter) viewPager.getAdapter()).getItem(1);
 
             ImageView compassImage = compassFragment.getView().findViewById(R.id.imageViewCompass);
             tvHeading = compassFragment.getView().findViewById(R.id.tvHeading);
 
 //            float degree = Math.round(sensorEvent.values[0]);
-            float degree = sensorEvent.values[0] * 75;
+//            float degree = sensorEvent.values[0] * 2000;
 
             tvHeading.setText("Rotation: " + degree + " degrees");
             RotateAnimation ra = new RotateAnimation(
