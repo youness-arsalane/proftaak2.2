@@ -61,7 +61,7 @@ public class TodayWeatherFragment extends Fragment {
         mServices = retrofit.create(IOpenWeatherMap.class);
     }
 
-    public static TodayWeatherFragment getInstance() {
+    static TodayWeatherFragment getInstance() {
         if (instance == null) {
             instance = new TodayWeatherFragment();
         }
@@ -93,23 +93,23 @@ public class TodayWeatherFragment extends Fragment {
     private void getWeatherInformationByLatLng() {
         compositeDisposable.add(
                 mServices.getWeatherByLatLng(String.valueOf(Common.current_location.getLatitude()),
-                String.valueOf(Common.current_location.getLongitude()),
-                Common.API_ID,
-                "metric")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<WeatherResult>() {
-                    @Override
-                    public void accept(WeatherResult weatherResult) {
-                        displayInformation(weatherResult);
-                    }
+                        String.valueOf(Common.current_location.getLongitude()),
+                        Common.API_ID,
+                        "metric")
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Consumer<WeatherResult>() {
+                            @Override
+                            public void accept(WeatherResult weatherResult) {
+                                displayInformation(weatherResult);
+                            }
 
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(getActivity(), "" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                })
+                        }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                Toast.makeText(getActivity(), "" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        })
         );
     }
 

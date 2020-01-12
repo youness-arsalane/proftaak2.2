@@ -2,7 +2,7 @@ package com.example.weather.Model;
 
 import java.util.List;
 
-public class WeatherResult {
+public class WeatherResult implements AllWeather {
     private Coord coord;
     private List<Weather> weather;
     private String base;

@@ -1,6 +1,6 @@
 package com.example.weather.Model;
 
-public class Weather {
+public class Weather implements AllWeather{
     private int id;
     private String main;
     private String description;
