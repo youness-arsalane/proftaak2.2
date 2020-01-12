@@ -23,7 +23,7 @@ Chat applicatie waarbij de chat verloopt via git. Het starten van een gesprek ge
 - [X] Android App plus webservice realiseren met lokale persistentie en Restful communicatie. Minimaal 2 sensoren gebruiken.
   - [X] Bevat connectie met webservice
     - [X] Weather API
-  - [ ] Gebruikt twee sensoren
+  - [X] Gebruikt twee sensoren
     - [X] geometrie sensor
     - [X] location sensor
 
