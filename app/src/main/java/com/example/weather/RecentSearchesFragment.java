@@ -7,18 +7,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class RecentSearchesFragment extends Fragment {
+import com.example.weather.DBHandler.RecentSearchesDBHelper;
 
-    ListView listView;
-    TextView textView;
-    String[] listItem;
+import java.util.Objects;
+
+public class RecentSearchesFragment extends Fragment {
 
     private static RecentSearchesFragment instance;
 
@@ -30,39 +29,38 @@ public class RecentSearchesFragment extends Fragment {
         return instance;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View itemView = inflater.inflate(R.layout.fragment_recent_searches, container, false);
 
+        RecentSearchesDBHelper recentSearchesDBHelper = new RecentSearchesDBHelper(getActivity().getApplicationContext());
 
-        if (getView() != null) {
-            listView = getView().findViewById(R.id.listView);
+        ListView listView = itemView.findViewById(R.id.listView);
+        String[] listItem = recentSearchesDBHelper.getAllKeywords();
 
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                Objects.requireNonNull(getActivity()),
+                android.R.layout.simple_list_item_1,
+                android.R.id.text1,
+                listItem
+        );
 
-            textView = getActivity().findViewById(R.id.textView);
-            listItem = getResources().getStringArray(R.array.array_technology);
+        listView.setAdapter(adapter);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                String value = adapter.getItem(position);
+                Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), value, Toast.LENGTH_SHORT).show();
+            }
+        });
 
-            final ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                    getActivity(),
-                    android.R.layout.simple_list_item_1,
-                    android.R.id.text1,
-                    listItem
-            );
-
-
-            listView.setAdapter(adapter);
-
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                    String value = adapter.getItem(position);
-                    Toast.makeText(getActivity().getApplicationContext(), value, Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        }
         return itemView;
     }
 }

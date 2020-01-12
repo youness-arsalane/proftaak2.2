@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:gravity="center_horizontal"
-    tools:context=".TodayWeatherFragment">
+    tools:context=".MainActivity">
 
     <LinearLayout
         android:id="@+id/weather_panel"

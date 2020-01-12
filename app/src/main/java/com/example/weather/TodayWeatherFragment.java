@@ -1,9 +1,6 @@
 package com.example.weather;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +10,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+
+import com.example.weather.Adapter.ViewPagerAdapter;
 import com.example.weather.Common.Common;
+import com.example.weather.DBHandler.RecentSearchesDBHelper;
 import com.example.weather.Model.WeatherResult;
 import com.example.weather.Retrofit.IOpenWeatherMap;
 import com.squareup.picasso.Picasso;
@@ -55,7 +57,6 @@ public class TodayWeatherFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
-
 
         mServices = retrofit.create(IOpenWeatherMap.class);
     }
@@ -130,10 +131,15 @@ public class TodayWeatherFragment extends Fragment {
                             @Override
                             public void accept(Throwable throwable) {
                                 Toast.makeText(getActivity(), "Geen resultaat gevonden", Toast.LENGTH_SHORT).show();
-//                                Toast.makeText(getActivity(), "" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         })
         );
+
+
+        ViewPager viewPager = getActivity().findViewById(R.id.viewpager);
+        RecentSearchesFragment recentSearchesFragment = (RecentSearchesFragment) ((ViewPagerAdapter) viewPager.getAdapter()).getItem(2);
+
+        new RecentSearchesDBHelper(getActivity().getApplicationContext()).addKeyword(city);
     }
 
     private void displayInformation(WeatherResult weatherResult) {

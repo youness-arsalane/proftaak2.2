@@ -24,7 +24,6 @@ public class CompassFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View itemView = inflater.inflate(R.layout.fragment_compass, container, false);
-        return itemView;
+        return inflater.inflate(R.layout.fragment_compass, container, false);
     }
 }
