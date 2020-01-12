@@ -18,21 +18,10 @@
             android:layout_width="325dp"
             android:layout_height="match_parent"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="20dp"
             android:hint="@string/weather_input_placeholder"
             android:autofillHints=""
-            android:inputType="text"
-            tools:targetApi="o" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="20dp"
-            android:text="@string/search"
-            android:textColor="#ffffff"
-            android:background="@color/colorPrimary"
-            android:onClick="searchByCity"
-            />
+            android:inputType="text" />
 
         <TextView
             android:id="@+id/txt_city_name"

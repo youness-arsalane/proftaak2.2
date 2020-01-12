@@ -7,8 +7,8 @@ Beschrijving: De (aspirant) beroepsbeoefenaar draagt verantwoordelijkheid voor h
 #### Deelopdrachten
 - [ ] In laten vullen van formulier Vestia(-D) door leidinggevende op de werkplek. Meenemen naar assessment.
   - [ ] Mohammed
-  - [ ] Younes
-  - [ ] ..
+  - [ ] Youness
+  - [ ] Dominique
 - [ ] Duurzaamheidscriteria toepassen en verwerken in op te leveren applicatie voor proftaak en daarbij een uitleg en/of verantwoording schrijven (1/2 tot 1x A4)
   - [ ] Criteria opstellen
   - [ ] Verantwoording schrijven (1/2 tot 1 A4)
