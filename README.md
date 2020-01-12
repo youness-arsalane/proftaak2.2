@@ -57,10 +57,10 @@ Deelopdracht: Maak een ontwerp volgens een gangbaar designpattern, architectuur 
 - [X] Een korte beschrijving met aanwijzingen hoe de applicatie geïnstalleerd en gebruikt moet worden.
 - [ ] Een korte beschrijving van de highlights (waar ben je trots op en wat is goed gelukt) en de lowlights (wat is minder goed gelukt wat zou nog verbeterd moeten).
   - [ ] Highlights (waar ben je trots op en wat is goed gelukt)
-   - [X]Mohammed
+   - [X] Mohammed
    - [ ] Youess
    - [ ] Dominique
   - [ ] Lowlights (wat is minder goed gelukt wat zou nog verbeterd moeten)
-   - [X]Mohammed
+   - [X] Mohammed
    - [ ] Youness
    - [ ] Dominique
