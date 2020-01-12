@@ -20,12 +20,12 @@ Beschrijving:  De (aspirant) beroepsbeoefenaar realiseert software waarbij de ge
 Beschrijving app:
 Chat applicatie waarbij de chat verloopt via git. Het starten van een gesprek gebeurd door nabije telefoons te vinden via Bluetooth en dan te authenticeren via de camera.
 
-- [ ] Android App plus webservice realiseren met lokale persistentie en Restful communicatie. Minimaal 2 sensoren gebruiken.
+- [X] Android App plus webservice realiseren met lokale persistentie en Restful communicatie. Minimaal 2 sensoren gebruiken.
   - [X] Bevat connectie met webservice
     - [X] Weather API
   - [ ] Gebruikt twee sensoren
     - [X] geometrie sensor
-    - [ ] ....
+    - [X] location sensor
 
 ### LU 3: Ontwerpprincipes OO
 Beschrijving:  De (aspirant) beroepsbeoefenaar beargumenteert aan de hand van een probleemanalyse welke van de behandelde design patterns kunnen bijdragen aan een goede oplossing van het probleem. Op basis van een probleemanalyse een ontwerp maken waarbij gebruik wordt gemaakt van design patterns. Een (eigen of gegeven) ontwerp waarbij design patterns zijn gebruikt implementeren. In een gegeven ontwerp of implementatie aangeven waar design patterns zijn gebruikt en de voordelen van die patterns kunnen uitleggen. Het verband uitleggen tussen een bepaald pattern en de flexibiliteit die daardoor in het ontwerp wordt gebracht
@@ -40,12 +40,12 @@ Deelopdracht: Maak een ontwerp volgens een gangbaar designpattern, architectuur 
 - [X] Er zijn wireframes met daarin de GUI functionaliteit.
 
 ##### Implementatie
-- [ ] Minimaal 2 designpatterns worden gebruikt, één voor de Android app en éen voor de backend/webservice. De keuze voor de design patterns is schriftelijk onderbouwd.
+- [X] Minimaal 2 designpatterns worden gebruikt, één voor de Android app en éen voor de backend/webservice. De keuze voor de design patterns is schriftelijk onderbouwd.
 - [ ] Er is een functioneel geteste en werkende Android app en een webservice.
 - [X] De applicatie inclusief API/webservice voldoen aan vooraf gestelde duurzaamheidscriteria.
 - [X] Broncode en GUI zijn Engelstalig en voor een internationale doelgroep
 - [X] Broncode voldoet aan de Java conventies voor naamgeving van klassen, variabelen, methoden en packages.
-- [ ] Packagenamen zijn zinvol en sluiten aan op designpatterns, frameworks en/of gekozen architectuur.
+- [X] Packagenamen zijn zinvol en sluiten aan op designpatterns, frameworks en/of gekozen architectuur.
 - [ ] Broncode bevat precies voldoende zinvolle Javadoc en precies voldoende zinvol commentaar. Met “precies voldoende zinvol” wordt bedoeld dat Javadoc en commentaar toegevoegde waarde moeten hebben. Dat overdaad de leesbaarheid van de broncode niet ten goede komt. Dat met te weinig Javadoc en commentaar het heel veel moeite kost om de broncode te begrijpen.
 - [X] Er wordt door de app gebruik gemaakt van een eigen of een externe webservice/API naar keuze. De app is gebouwd volgens de tijdens de les aangeboden technieken voor Android realisatie. Er is local storage en er wordt gebruik gemaakt van minimaal 2 sensoren buiten touchscreen en standaard bedieningselementen om.
 - [ ] Exception handling wordt ingezet waar dat nodig is.
@@ -53,8 +53,14 @@ Deelopdracht: Maak een ontwerp volgens een gangbaar designpattern, architectuur 
 - [ ] Er is een export bestand van de database(s) met de databasestructuur, maar ook data, indien nodig, zodat de vakdocent zelf de applicatie kan testen.
 
 ##### Documentatie
-- [ ] Aantoonbaar gebruik van een ingerichte werkomgeving en een omgeving waar samengewerkt wordt.
-- [ ] Een korte beschrijving met aanwijzingen hoe de applicatie geïnstalleerd en gebruikt moet worden.
+- [X] Aantoonbaar gebruik van een ingerichte werkomgeving en een omgeving waar samengewerkt wordt.
+- [X] Een korte beschrijving met aanwijzingen hoe de applicatie geïnstalleerd en gebruikt moet worden.
 - [ ] Een korte beschrijving van de highlights (waar ben je trots op en wat is goed gelukt) en de lowlights (wat is minder goed gelukt wat zou nog verbeterd moeten).
   - [ ] Highlights (waar ben je trots op en wat is goed gelukt)
+    -[X]Mohammed
+    -[ ] Youess
+    -[ ] Dominique
   - [ ] Lowlights (wat is minder goed gelukt wat zou nog verbeterd moeten)
+    -[X]Mohammed
+    -[ ] Youness
+    -[ ] Dominique
