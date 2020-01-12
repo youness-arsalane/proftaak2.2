@@ -1,14 +1,7 @@
 package com.example.weather;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.viewpager.widget.ViewPager;
-
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -17,12 +10,24 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
-import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.weather.Adapter.ViewPagerAdapter;
 import com.example.weather.Common.Common;
@@ -42,8 +47,9 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
-    private Fragment todayWeatherFragment;
-    private Fragment compassFragment;
+    private static final String TAG = "TEEHEE";
+    private CompassFragment compassFragment;
+    private TodayWeatherFragment todayWeatherFragment;
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -62,14 +68,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        todayWeatherFragment = new TodayWeatherFragment();
-//        compassFragment = new CompassFragment();
-
         coordinatorLayout = findViewById(R.id.root_view);
         Toolbar toolbar = findViewById(R.id.toolbar);
 
-//        compassImage = compassFragment.getView().findViewById(R.id.imageViewCompass);
-//        tvHeading = compassFragment.getView().findViewById(R.id.tvHeading);
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
         setSupportActionBar(toolbar);
@@ -116,6 +117,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mSensorManager.unregisterListener(this);
     }
 
+    private void buildLocationRequest() {
+        locationRequest = new LocationRequest();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+//        locationRequest.setInterval(5000);
+//        locationRequest.setFastestInterval(3000);
+        locationRequest.setSmallestDisplacement(10.0f);
+    }
+
     private void buildLocationCallBack() {
         locationCallback = new LocationCallback() {
             @Override
@@ -127,8 +136,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 setupViewPager(viewPager);
                 tabLayout = findViewById(R.id.tabs);
                 tabLayout.setupWithViewPager(viewPager);
-
-                Log.d("location", locationResult.getLastLocation().getLatitude() + "/" + locationResult.getLastLocation().getLongitude());
             }
         };
     }
@@ -137,15 +144,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(TodayWeatherFragment.getInstance(), "Vandaag");
         adapter.addFragment(CompassFragment.getInstance(), "Kompas");
+        adapter.addFragment(RecentSearchesFragment.getInstance(), "Recent");
         viewPager.setAdapter(adapter);
     }
 
-    private void buildLocationRequest() {
-        locationRequest = new LocationRequest();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(5000);
-        locationRequest.setFastestInterval(3000);
-        locationRequest.setSmallestDisplacement(10.0f);
+    public void searchByCity(View view) {
+        EditText city = findViewById(R.id.weather_input);
+
+        todayWeatherFragment = (TodayWeatherFragment) ((ViewPagerAdapter) viewPager.getAdapter()).getItem(0);
+        todayWeatherFragment.getWeatherInformationByCity(city.getText().toString());
+
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+        view.requestFocus();
     }
 
     @Override
@@ -153,30 +165,49 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         viewPager = findViewById(R.id.viewpager);
 
         if (viewPager.getAdapter() != null) {
-            compassFragment = ((ViewPagerAdapter) viewPager.getAdapter()).getItem(1);
+            compassFragment = (CompassFragment) ((ViewPagerAdapter) viewPager.getAdapter()).getItem(1);
 
             compassImage = compassFragment.getView().findViewById(R.id.imageViewCompass);
             tvHeading = compassFragment.getView().findViewById(R.id.tvHeading);
 
-            // TODO: debug
-
-            float degree = Math.round(sensorEvent.values[0]); // get the angle around the z-axis rotated
-            tvHeading.setText("Heading: " + degree + " degrees");
-
-            // create a rotation animation (reverse turn degree degrees)
+            float degree = Math.round(sensorEvent.values[0]);
+            tvHeading.setText("Rotation: " + degree + " degrees");
             RotateAnimation ra = new RotateAnimation(
                     currentDegree,
                     -degree,
-                    Animation.RELATIVE_TO_SELF, 0.5f,
+                    Animation.RELATIVE_TO_SELF,
+                    0.5f,
                     Animation.RELATIVE_TO_SELF,
                     0.5f
             );
-
-            ra.setDuration(210); // how long the animation will take place
-            ra.setFillAfter(true); // set the animation after the end of the reservation status
-
-            compassImage.startAnimation(ra); // Start the animation
+            ra.setDuration(120);
+            ra.setFillAfter(true);
+            compassImage.startAnimation(ra);
             currentDegree = -degree;
+
+
+
+
+
+
+////            float degree = sensorEvent.values[0] * 100; // get the angle around the z-axis rotated
+//            float degree = Math.round(sensorEvent.values[0]); // get the angle around the z-axis rotated
+//
+//            tvHeading.setText("Heading: " + degree + " degrees");
+//
+//            RotateAnimation ra = new RotateAnimation(
+//                    currentDegree,
+//                    -degree,
+//                    Animation.RELATIVE_TO_SELF, 0.5f,
+//                    Animation.RELATIVE_TO_SELF,
+//                    0.5f
+//            );
+//
+//            ra.setDuration(210);
+//            ra.setFillAfter(true);
+//
+//            compassImage.startAnimation(ra);
+//            currentDegree = -degree;
         }
     }
 

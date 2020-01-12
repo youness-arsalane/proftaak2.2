@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.example.weather.Common.Common;
 import com.example.weather.Model.WeatherResult;
 import com.example.weather.Retrofit.IOpenWeatherMap;
-import com.example.weather.Retrofit.RetrofitClient;
 import com.squareup.picasso.Picasso;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -24,6 +23,8 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class TodayWeatherFragment extends Fragment {
     private TextView txtCityName;
@@ -47,7 +48,15 @@ public class TodayWeatherFragment extends Fragment {
 
     public TodayWeatherFragment() {
         compositeDisposable = new CompositeDisposable();
-        Retrofit retrofit = RetrofitClient.getInstance();
+
+        Retrofit retrofit = new Retrofit
+                .Builder()
+                .baseUrl("http://api.openweathermap.org/data/2.5/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+
+
         mServices = retrofit.create(IOpenWeatherMap.class);
     }
 
@@ -75,12 +84,12 @@ public class TodayWeatherFragment extends Fragment {
         txtWind = itemView.findViewById(R.id.txt_wind);
         weatherPanel = itemView.findViewById(R.id.weather_panel);
         loading = itemView.findViewById(R.id.loading);
-        getWeatherInformation();
+        getWeatherInformationByLatLng();
 
         return itemView;
     }
 
-    private void getWeatherInformation() {
+    private void getWeatherInformationByLatLng() {
         compositeDisposable.add(
                 mServices.getWeatherByLatLng(String.valueOf(Common.current_location.getLatitude()),
                 String.valueOf(Common.current_location.getLongitude()),
@@ -91,23 +100,7 @@ public class TodayWeatherFragment extends Fragment {
                 .subscribe(new Consumer<WeatherResult>() {
                     @Override
                     public void accept(WeatherResult weatherResult) {
-                        //Load image
-                        Picasso.get().load("https://openweathermap.org/img/w/" + weatherResult.getWeather().get(0).getIcon() + ".png").into(imgWeather);
-
-                        //Load information
-                        txtCityName.setText(weatherResult.getName());
-                        txtTemperature.setText(weatherResult.getMain().getTemp() + "°C");
-                        txtDateTime.setText(Common.convertUnixToDate(weatherResult.getDt()));
-                        txtPressure.setText(weatherResult.getMain().getPressure() + "hpa");
-                        txtHumidity.setText(weatherResult.getMain().getHumidity() + "%");
-                        txtSunrise.setText(Common.convertUnixToTime(weatherResult.getSys().getSunrise()));
-                        txtSunset.setText(Common.convertUnixToTime(weatherResult.getSys().getSunset()));
-                        txtGeoCoordinates.setText(weatherResult.getCoord().toString());
-                        txtWind.setText(weatherResult.getWind().getSpeed() + " km/u " + Common.convertWindDegreesToDirection(weatherResult.getWind().getDeg()));
-
-                        // Display panel
-                        weatherPanel.setVisibility(View.VISIBLE);
-                        loading.setVisibility(View.GONE);
+                        displayInformation(weatherResult);
                     }
 
                 }, new Consumer<Throwable>() {
@@ -119,4 +112,44 @@ public class TodayWeatherFragment extends Fragment {
         );
     }
 
+    public void getWeatherInformationByCity(String city) {
+        compositeDisposable.add(
+                mServices.getWeatherBySearchQuery(
+                        city,
+                        Common.API_ID,
+                        "metric")
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Consumer<WeatherResult>() {
+                            @Override
+                            public void accept(WeatherResult weatherResult) {
+                                displayInformation(weatherResult);
+                            }
+
+                        }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) {
+                                Toast.makeText(getActivity(), "Geen resultaat gevonden", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getActivity(), "" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        })
+        );
+    }
+
+    private void displayInformation(WeatherResult weatherResult) {
+        Picasso.get().load("https://openweathermap.org/img/w/" + weatherResult.getWeather().get(0).getIcon() + ".png").into(imgWeather);
+
+        txtCityName.setText(weatherResult.getName() + ", " + weatherResult.getSys().getCountry());
+        txtTemperature.setText(weatherResult.getMain().getTemp() + "°C");
+        txtDateTime.setText(Common.convertUnixToDate(weatherResult.getDt()));
+        txtPressure.setText(weatherResult.getMain().getPressure() + "hpa");
+        txtHumidity.setText(weatherResult.getMain().getHumidity() + "%");
+        txtSunrise.setText(Common.convertUnixToTime(weatherResult.getSys().getSunrise()));
+        txtSunset.setText(Common.convertUnixToTime(weatherResult.getSys().getSunset()));
+        txtGeoCoordinates.setText(weatherResult.getCoord().toString());
+        txtWind.setText(weatherResult.getWind().getSpeed() + " km/u " + Common.convertWindDegreesToDirection(weatherResult.getWind().getDeg()));
+
+        weatherPanel.setVisibility(View.VISIBLE);
+        loading.setVisibility(View.GONE);
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.weather.Adapter;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -12,13 +13,14 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     private final List<Fragment> fragmentList = new ArrayList<>();
     private final List<String> fragmentTitle = new ArrayList<>();
 
-    public ViewPagerAdapter(FragmentManager fm) {
-        super(fm);
+    public ViewPagerAdapter(@NonNull FragmentManager fm) {
+        super(fm, ViewPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
 
+    @NonNull
     @Override
-    public Fragment getItem(int i) {
-        return fragmentList.get(i);
+    public Fragment getItem(int position) {
+        return fragmentList.get(position);
     }
 
     @Override

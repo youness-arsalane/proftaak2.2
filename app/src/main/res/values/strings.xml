@@ -9,4 +9,21 @@
     <string name="pressure">Luchtdruk:</string>
     <string name="wind">Wind:</string>
     <string name="geo_coord">Coördinaten:</string>
+    <string name="weather_input_placeholder">Vul een plaats in...</string>
+    <string name="search">Zoeken</string>
+
+    <string-array name="array_technology">
+        <item>Android</item>
+        <item>Java</item>
+        <item>Php</item>
+        <item>Hadoop</item>
+        <item>Sap</item>
+        <item>Python</item>
+        <item>Ajax</item>
+        <item>C++</item>
+        <item>Ruby</item>
+        <item>Rails</item>
+        <item>.Net</item>
+        <item>Perl</item>
+    </string-array>
 </resources>
