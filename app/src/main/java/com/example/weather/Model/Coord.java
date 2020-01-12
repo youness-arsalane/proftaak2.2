@@ -3,8 +3,8 @@ package com.example.weather.Model;
 import androidx.annotation.NonNull;
 
 public class Coord {
-    public double lon;
-    public double lat;
+    private double lon;
+    private double lat;
 
     public double getLon() {
         return lon;
