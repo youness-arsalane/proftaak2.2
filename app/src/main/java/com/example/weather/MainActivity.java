@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         todayWeatherFragment = (TodayWeatherFragment) ((ViewPagerAdapter) viewPager.getAdapter()).getItem(0);
         todayWeatherFragment.getWeatherInformationByCity(city.getText().toString());
 
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
         view.requestFocus();
@@ -184,10 +184,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             ra.setFillAfter(true);
             compassImage.startAnimation(ra);
             currentDegree = -degree;
-
-
-
-
 
 
 ////            float degree = sensorEvent.values[0] * 100; // get the angle around the z-axis rotated

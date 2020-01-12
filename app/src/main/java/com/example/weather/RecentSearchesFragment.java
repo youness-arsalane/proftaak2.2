@@ -1,5 +1,6 @@
 package com.example.weather;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +17,14 @@ import androidx.fragment.app.Fragment;
 
 public class RecentSearchesFragment extends Fragment {
 
-    ListView listView;
-    TextView textView;
-    String[] listItem;
+    private ListView listView;
+    private TextView textView;
+    private String[] listItem;
 
+    @SuppressLint("StaticFieldLeak")
     private static RecentSearchesFragment instance;
 
-    public static RecentSearchesFragment getInstance() {
+    static RecentSearchesFragment getInstance() {
         if (instance == null) {
             instance = new RecentSearchesFragment();
         }
