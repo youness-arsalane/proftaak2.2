@@ -35,6 +35,10 @@ public class RecentSearchesDBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * @param keyword recent searches
+     * Saves a new keyword to recent_searches table
+     */
     public void addKeyword(String keyword) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_KEYWORD, keyword);
@@ -44,6 +48,9 @@ public class RecentSearchesDBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * @return returns all keywords in recent_searches table
+     */
     public String[] getAllKeywords() {
         String query_b = "SELECT * FROM " + DB_TABLE_NAME;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -56,16 +63,14 @@ public class RecentSearchesDBHelper extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
         cursor.close();
-        return names.toArray(new String[names.size()]);
+        return names.toArray(new String[0]);
     }
 
+    /**
+     * Removes all keywords in recent_searches table
+     */
     public void deleteAll() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + DB_TABLE_NAME);
-    }
-
-    public void deleteDB() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DROP TABLE IF EXISTS " + DB_TABLE_NAME);
     }
 }

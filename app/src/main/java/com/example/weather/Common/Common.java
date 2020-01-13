@@ -8,20 +8,41 @@ import java.util.Date;
 
 public class Common {
     public static final String API_ID = "6e980709e53be6f51457dc27edcc0aaa";
-    public static Location current_location = null;
+    public static Location currentLocation = null;
 
+    /**
+     * @param dt Unix Timestamp
+     * @return returns to String formatted Date object
+     *
+     * Converts Unix Timestamp to Date and then formats it to a readable date
+     */
     public static String convertUnixToDate(long dt) {
         Date date = new Date(dt * 1000L);
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("EEEE DD MMMM YYYY HH:mm");
+
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE DD MMMM YYYY HH:mm");
         return sdf.format(date);
     }
 
+    /**
+     * @param dt Unix Timestamp
+     * @return returns to String formatted Date object
+     *
+     * Converts Unix Timestamp to Date and then formats it to a readable time
+     */
     public static String convertUnixToTime(long dt) {
         Date date = new Date(dt * 1000L);
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         return sdf.format(date);
     }
 
+    /**
+     * @param degrees *
+     * @return Readable direction
+     * Converts a double to a readable direction
+     */
     public static String convertWindDegreesToDirection(double degrees) {
         String[] directions = {
                 "N", "NNE", "NE", "ENE",

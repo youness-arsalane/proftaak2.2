@@ -12,4 +12,7 @@
     <string name="weather_input_placeholder">Vul een plaats in...</string>
     <string name="search">Zoeken</string>
     <string name="delete_recent_searches">Verwijder recente zoekopdrachten</string>
+    <string name="today">Vandaag</string>
+    <string name="compass">Kompas</string>
+    <string name="recent">Recent</string>
 </resources>

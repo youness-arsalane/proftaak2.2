@@ -29,17 +29,12 @@ public class RecentSearchesFragment extends Fragment {
         return instance;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View itemView = inflater.inflate(R.layout.fragment_recent_searches, container, false);
 
-        RecentSearchesDBHelper recentSearchesDBHelper = new RecentSearchesDBHelper(getActivity().getApplicationContext());
+        RecentSearchesDBHelper recentSearchesDBHelper = new RecentSearchesDBHelper(Objects.requireNonNull(getActivity()).getApplicationContext());
 
         ListView listView = itemView.findViewById(R.id.listView);
         String[] listItem = recentSearchesDBHelper.getAllKeywords();

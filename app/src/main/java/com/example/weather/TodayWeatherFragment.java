@@ -1,12 +1,13 @@
 package com.example.weather;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,8 @@ import com.example.weather.Model.WeatherResult;
 import com.example.weather.Retrofit.IOpenWeatherMap;
 import com.squareup.picasso.Picasso;
 
+import java.util.Objects;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
@@ -29,6 +32,9 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class TodayWeatherFragment extends Fragment {
+    private static final String SHARED_PREFERENCES = "sharedPreferences";
+    private static final String LAST_LOCATION = "lastLocation";
+
     private TextView txtCityName;
     private TextView txtHumidity;
     private TextView txtSunrise;
@@ -40,12 +46,11 @@ public class TodayWeatherFragment extends Fragment {
     private TextView txtWind;
 
     private ImageView imgWeather;
-    private LinearLayout weatherPanel;
-    private ProgressBar loading;
 
     private CompositeDisposable compositeDisposable;
     private IOpenWeatherMap mServices;
 
+    @SuppressLint("StaticFieldLeak")
     private static TodayWeatherFragment instance;
 
     public TodayWeatherFragment() {
@@ -83,17 +88,41 @@ public class TodayWeatherFragment extends Fragment {
         txtDateTime = itemView.findViewById(R.id.txt_date_time);
         txtGeoCoordinates = itemView.findViewById(R.id.txt_geo_coord);
         txtWind = itemView.findViewById(R.id.txt_wind);
-        weatherPanel = itemView.findViewById(R.id.weather_panel);
-        loading = itemView.findViewById(R.id.loading);
         getWeatherInformationByLatLng();
 
         return itemView;
     }
 
+    /**
+     * @param string
+     * Updates lastLocation using SharedPreferences
+     */
+    private void updateLastLocation(String string) {
+        SharedPreferences sharedPreferences = Objects.requireNonNull(getActivity()).getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(LAST_LOCATION, string);
+        editor.apply();
+
+        String lastLocationSaved = sharedPreferences.getString(LAST_LOCATION, "");
+
+        ViewPager viewPager = Objects.requireNonNull(getActivity()).findViewById(R.id.viewpager);
+
+        TodayWeatherFragment todayWeatherFragment = (TodayWeatherFragment) ((ViewPagerAdapter) Objects.requireNonNull(viewPager.getAdapter())).getItem(0);
+        TextView lastLocation = Objects.requireNonNull(todayWeatherFragment.getView()).findViewById(R.id.lastLocation);
+
+        String lastLocationText = "Laatst geregistreerde locatie:\n" + lastLocationSaved;
+        lastLocation.setText(lastLocationText);
+    }
+
+    /**
+     * Requests weather data by current location and displays it
+     * Also saves the search to Recent Searches
+     */
     private void getWeatherInformationByLatLng() {
         compositeDisposable.add(
-                mServices.getWeatherByLatLng(String.valueOf(Common.current_location.getLatitude()),
-                        String.valueOf(Common.current_location.getLongitude()),
+                mServices.getWeatherByLatLng(String.valueOf(Common.currentLocation.getLatitude()),
+                        String.valueOf(Common.currentLocation.getLongitude()),
                         Common.API_ID,
                         "metric")
                         .subscribeOn(Schedulers.io())
@@ -102,6 +131,7 @@ public class TodayWeatherFragment extends Fragment {
                             @Override
                             public void accept(WeatherResult weatherResult) {
                                 displayInformation(weatherResult);
+                                updateLastLocation(weatherResult.getName() + ", " + weatherResult.getSys().getCountry());
                             }
 
                         }, new Consumer<Throwable>() {
@@ -113,6 +143,11 @@ public class TodayWeatherFragment extends Fragment {
         );
     }
 
+    /**
+     * @param city
+     * Requests weather data by city and displays it
+     * Also saves the search to Recent Searches
+     */
     public void getWeatherInformationByCity(String city) {
         compositeDisposable.add(
                 mServices.getWeatherBySearchQuery(
@@ -136,12 +171,13 @@ public class TodayWeatherFragment extends Fragment {
         );
 
 
-        ViewPager viewPager = getActivity().findViewById(R.id.viewpager);
-        RecentSearchesFragment recentSearchesFragment = (RecentSearchesFragment) ((ViewPagerAdapter) viewPager.getAdapter()).getItem(2);
-
-        new RecentSearchesDBHelper(getActivity().getApplicationContext()).addKeyword(city);
+        new RecentSearchesDBHelper(Objects.requireNonNull(getActivity()).getApplicationContext()).addKeyword(city);
     }
 
+    /**
+     * @param weatherResult
+     * Displays new weather data
+     */
     private void displayInformation(WeatherResult weatherResult) {
         Picasso.get().load("https://openweathermap.org/img/w/" + weatherResult.getWeather().get(0).getIcon() + ".png").into(imgWeather);
 
@@ -154,8 +190,5 @@ public class TodayWeatherFragment extends Fragment {
         txtSunset.setText(Common.convertUnixToTime(weatherResult.getSys().getSunset()));
         txtGeoCoordinates.setText(weatherResult.getCoord().toString());
         txtWind.setText(weatherResult.getWind().getSpeed() + " km/u " + Common.convertWindDegreesToDirection(weatherResult.getWind().getDeg()));
-
-        weatherPanel.setVisibility(View.VISIBLE);
-        loading.setVisibility(View.GONE);
     }
 }

@@ -2,6 +2,7 @@ package com.example.weather;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -10,6 +11,7 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,6 +47,7 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.util.List;
+import java.util.Objects;
 
 import static java.sql.DriverManager.println;
 
@@ -57,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private LocationRequest locationRequest;
 
     private float currentDegree = 0f;
-    TextView tvHeading;
+    private TextView tvHeading;
 
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
@@ -80,17 +83,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mAccelerometer = Objects.requireNonNull(mSensorManager).getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         RecentSearchesDBHelper db = new RecentSearchesDBHelper(this);
         db.onCreate(db.getWritableDatabase());
 
+        // Requesting permission
         try {
-            //Request permission
             Dexter
                     .withActivity(this)
                     .withPermissions(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -102,7 +106,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                                 buildLocationRequest();
                                 buildLocationCallBack();
 
-                                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                if (
+                                        checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                                        checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                                ) {
                                     return;
                                 }
 
@@ -117,8 +124,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         }
                     })
                     .check();
-        } catch (Exception $e) {
-            println("Something went wrong. Your Issue :"+$e);
+        } catch (Exception e) {
+            println("Something went wrong. Your Issue :" + e);
         }
     }
 
@@ -138,45 +145,62 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mSensorManager.unregisterListener(this);
     }
 
+    /**
+     * Builds LocationRequest with default values
+     */
     private void buildLocationRequest() {
         locationRequest = new LocationRequest();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-//        locationRequest.setInterval(5000);
-//        locationRequest.setFastestInterval(3000);
+        locationRequest.setInterval(5000);
+        locationRequest.setFastestInterval(3000);
         locationRequest.setSmallestDisplacement(10.0f);
     }
 
+    /**
+     * Builds LocationCallback with default values
+     */
     private void buildLocationCallBack() {
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
 
-                Common.current_location = locationResult.getLastLocation();
+                Common.currentLocation = locationResult.getLastLocation();
                 viewPager = findViewById(R.id.viewpager);
                 setupViewPager(viewPager);
                 tabLayout = findViewById(R.id.tabs);
                 tabLayout.setupWithViewPager(viewPager);
+
+
+
             }
         };
     }
 
+    /**
+     * @param viewPager
+     * Adds an Adapter of Fragments in the a given ViewPager
+     */
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(TodayWeatherFragment.getInstance(), "Vandaag");
-        adapter.addFragment(CompassFragment.getInstance(), "Kompas");
-        adapter.addFragment(RecentSearchesFragment.getInstance(), "Recent");
+        adapter.addFragment(TodayWeatherFragment.getInstance(), getString(R.string.today));
+        adapter.addFragment(CompassFragment.getInstance(), getString(R.string.compass));
+        adapter.addFragment(RecentSearchesFragment.getInstance(), getString(R.string.recent));
         viewPager.setAdapter(adapter);
     }
 
+    /**
+     * @param view
+     * Gets city from EditText and makes request by calling getWeatherInformationByCity()
+     */
     public void searchByCity(View view) {
         EditText city = findViewById(R.id.weather_input);
 
-        TodayWeatherFragment todayWeatherFragment = (TodayWeatherFragment) ((ViewPagerAdapter) viewPager.getAdapter()).getItem(0);
+        TodayWeatherFragment todayWeatherFragment = (TodayWeatherFragment) ((ViewPagerAdapter) Objects.requireNonNull(viewPager.getAdapter())).getItem(0);
         todayWeatherFragment.getWeatherInformationByCity(city.getText().toString());
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        Objects.requireNonNull(imm).hideSoftInputFromWindow(view.getWindowToken(), 0);
 
         view.requestFocus();
     }
@@ -186,7 +210,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         viewPager = findViewById(R.id.viewpager);
 
         if (viewPager.getAdapter() != null) {
-
             float degree = 0;
             if (sensorEvent.sensor == mAccelerometer) {
                 System.arraycopy(sensorEvent.values, 0, mLastAccelerometer, 0, sensorEvent.values.length);
@@ -203,16 +226,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 degree = (float) degreeDouble;
             }
 
-
             CompassFragment compassFragment = (CompassFragment) ((ViewPagerAdapter) viewPager.getAdapter()).getItem(1);
 
-            ImageView compassImage = compassFragment.getView().findViewById(R.id.imageViewCompass);
+            ImageView compassImage = Objects.requireNonNull(compassFragment.getView()).findViewById(R.id.imageViewCompass);
             tvHeading = compassFragment.getView().findViewById(R.id.tvHeading);
 
-//            float degree = Math.round(sensorEvent.values[0]);
-//            float degree = sensorEvent.values[0] * 2000;
+            String tvHeadingText = "Rotation: " + degree + " degrees";
+            tvHeading.setText(tvHeadingText);
 
-            tvHeading.setText("Rotation: " + degree + " degrees");
             RotateAnimation ra = new RotateAnimation(
                     currentDegree,
                     -degree,
@@ -221,6 +242,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     Animation.RELATIVE_TO_SELF,
                     0.5f
             );
+
             ra.setDuration(120);
             ra.setFillAfter(true);
             compassImage.startAnimation(ra);
@@ -246,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             RecentSearchesDBHelper db = new RecentSearchesDBHelper(this);
             db.deleteAll();
 
-            RecentSearchesFragment recentSearchesFragment = (RecentSearchesFragment) ((ViewPagerAdapter) viewPager.getAdapter()).getItem(2);
+            RecentSearchesFragment recentSearchesFragment = (RecentSearchesFragment) ((ViewPagerAdapter) Objects.requireNonNull(viewPager.getAdapter())).getItem(2);
 
             final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.detach(recentSearchesFragment);

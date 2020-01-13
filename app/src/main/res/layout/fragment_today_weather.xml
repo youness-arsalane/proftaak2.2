@@ -19,20 +19,19 @@
             android:layout_height="match_parent"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="5dp"
-            android:hint="@string/weather_input_placeholder"
             android:autofillHints=""
+            android:hint="@string/weather_input_placeholder"
             android:inputType="text"
             tools:targetApi="o" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="20dp"
-            android:text="@string/search"
-            android:textColor="#ffffff"
+            android:layout_marginBottom="5dp"
             android:background="@color/colorPrimary"
             android:onClick="searchByCity"
-            />
+            android:text="@string/search"
+            android:textColor="@color/windowbackground" />
 
         <TextView
             android:id="@+id/txt_city_name"
@@ -77,7 +76,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@drawable/border"
             android:stretchColumns="*">
 
             <TableRow
@@ -87,7 +85,6 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/cell"
                     android:gravity="end"
                     android:text="@string/wind" />
 
@@ -96,8 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/cell" />
+                    android:layout_marginStart="10dp" />
             </TableRow>
 
             <TableRow
@@ -107,7 +103,6 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/cell"
                     android:gravity="end"
                     android:text="@string/pressure" />
 
@@ -116,8 +111,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/cell" />
+                    android:layout_marginStart="10dp" />
             </TableRow>
 
             <TableRow
@@ -127,7 +121,6 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/cell"
                     android:gravity="end"
                     android:text="@string/humidity" />
 
@@ -136,8 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/cell" />
+                    android:layout_marginStart="10dp" />
             </TableRow>
 
             <TableRow
@@ -147,7 +139,6 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/cell"
                     android:gravity="end"
                     android:text="@string/sunrise" />
 
@@ -156,8 +147,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/cell" />
+                    android:layout_marginStart="10dp" />
             </TableRow>
 
             <TableRow
@@ -167,7 +157,6 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/cell"
                     android:gravity="end"
                     android:text="@string/sunset" />
 
@@ -176,8 +165,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/cell" />
+                    android:layout_marginStart="10dp" />
             </TableRow>
 
             <TableRow
@@ -187,7 +175,6 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/cell"
                     android:gravity="end"
                     android:text="@string/geo_coord" />
 
@@ -196,17 +183,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/cell" />
+                    android:layout_marginStart="10dp" />
             </TableRow>
         </TableLayout>
+        <TextView
+            android:id="@+id/lastLocation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="45dp"
+            android:gravity="center">
+        </TextView>
     </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/loading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:indeterminate="true"
-        android:visibility="gone"/>
 </RelativeLayout>
