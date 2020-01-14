@@ -247,6 +247,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             ra.setFillAfter(true);
             compassImage.startAnimation(ra);
             currentDegree = -degree;
+        } else{
+            println("Your viewPager is already filled,try again");
         }
     }
 
