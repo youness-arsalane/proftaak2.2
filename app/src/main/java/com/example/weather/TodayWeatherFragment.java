@@ -33,7 +33,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class TodayWeatherFragment extends Fragment {
     private static final String SHARED_PREFERENCES = "sharedPreferences";
-    private static final String LAST_LOCATION = "lastLocation";
+    private static final String LAST_LOCATION_KEY = "lastLocation";
 
     private TextView txtCityName;
     private TextView txtHumidity;
@@ -58,7 +58,7 @@ public class TodayWeatherFragment extends Fragment {
 
         Retrofit retrofit = new Retrofit
                 .Builder()
-                .baseUrl("http://api.openweathermap.org/data/2.5/")
+                .baseUrl(Common.baseURL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
@@ -98,21 +98,23 @@ public class TodayWeatherFragment extends Fragment {
      * Updates lastLocation using SharedPreferences
      */
     private void updateLastLocation(String string) {
-        SharedPreferences sharedPreferences = Objects.requireNonNull(getActivity()).getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        if (getActivity() != null) {
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
 
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(LAST_LOCATION, string);
-        editor.apply();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(LAST_LOCATION_KEY, string);
+            editor.apply();
 
-        String lastLocationSaved = sharedPreferences.getString(LAST_LOCATION, "");
+            String lastLocationSaved = sharedPreferences.getString(LAST_LOCATION_KEY, "");
 
-        ViewPager viewPager = Objects.requireNonNull(getActivity()).findViewById(R.id.viewpager);
+            ViewPager viewPager = getActivity().findViewById(R.id.viewpager);
 
-        TodayWeatherFragment todayWeatherFragment = (TodayWeatherFragment) ((ViewPagerAdapter) Objects.requireNonNull(viewPager.getAdapter())).getItem(0);
-        TextView lastLocation = Objects.requireNonNull(todayWeatherFragment.getView()).findViewById(R.id.lastLocation);
+            TodayWeatherFragment todayWeatherFragment = (TodayWeatherFragment) ((ViewPagerAdapter) Objects.requireNonNull(viewPager.getAdapter())).getItem(0);
+            TextView lastLocation = Objects.requireNonNull(todayWeatherFragment.getView()).findViewById(R.id.lastLocation);
 
-        String lastLocationText = "Laatst geregistreerde locatie:\n" + lastLocationSaved;
-        lastLocation.setText(lastLocationText);
+            String lastLocationText = "Laatst geregistreerde locatie:\n" + lastLocationSaved;
+            lastLocation.setText(lastLocationText);
+        }
     }
 
     /**
@@ -123,7 +125,7 @@ public class TodayWeatherFragment extends Fragment {
         compositeDisposable.add(
                 mServices.getWeatherByLatLng(String.valueOf(Common.currentLocation.getLatitude()),
                         String.valueOf(Common.currentLocation.getLongitude()),
-                        Common.API_ID,
+                        Common.appId,
                         "metric")
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -152,7 +154,7 @@ public class TodayWeatherFragment extends Fragment {
         compositeDisposable.add(
                 mServices.getWeatherBySearchQuery(
                         city,
-                        Common.API_ID,
+                        Common.appId,
                         "metric")
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())

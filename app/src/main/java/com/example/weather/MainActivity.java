@@ -166,11 +166,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 Common.currentLocation = locationResult.getLastLocation();
                 viewPager = findViewById(R.id.viewpager);
                 setupViewPager(viewPager);
+
                 tabLayout = findViewById(R.id.tabs);
                 tabLayout.setupWithViewPager(viewPager);
-
-
-
             }
         };
     }
@@ -216,6 +214,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 System.arraycopy(sensorEvent.values, 0, mLastMagnetometer, 0, sensorEvent.values.length);
                 mLastMagnetometerSet = true;
             }
+
             if (mLastAccelerometerSet && mLastMagnetometerSet) {
                 SensorManager.getRotationMatrix(mR, null, mLastAccelerometer, mLastMagnetometer);
                 SensorManager.getOrientation(mR, mOrientation);
@@ -245,8 +244,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             ra.setFillAfter(true);
             compassImage.startAnimation(ra);
             currentDegree = -degree;
-        } else{
-            println("Your viewPager is already filled,try again");
         }
     }
 

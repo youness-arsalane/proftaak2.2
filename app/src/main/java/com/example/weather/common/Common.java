@@ -7,7 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Common {
-    public static final String API_ID = "6e980709e53be6f51457dc27edcc0aaa";
+    public static final String baseURL = "http://api.openweathermap.org/data/2.5/";
+    public static final String appId = "6e980709e53be6f51457dc27edcc0aaa";
     public static Location currentLocation = null;
 
     /**

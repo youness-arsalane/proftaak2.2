@@ -10,7 +10,7 @@ public interface IOpenWeatherMap {
     /**
      * @param lat Latitude
      * @param lng Longitude
-     * @param appid APP_ID
+     * @param appid appId
      * @param unit Unit measurement
      * @return WeatherResult containing response data by
      * Uses Retrofit2 to make API call with given parameters
@@ -25,7 +25,7 @@ public interface IOpenWeatherMap {
 
     /**
      * @param q Query
-     * @param appid APP_ID
+     * @param appid appId
      * @param unit Unit measurement
      * @return WeatherResult containing response data by
      * Uses Retrofit2 to make API call with given parameters

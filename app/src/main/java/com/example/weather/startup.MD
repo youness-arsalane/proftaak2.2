@@ -5,8 +5,8 @@
    
 2. click in the menu on the icon of the Weather APP 
 
-3. And your'e in, you should be able to see your weather nearby. 
+3. And you're in, you should be able to see your weather nearby. 
 
 4. Now you can explore and look further into the app. 
 
-If you have any more qeustions don't hasitate to contact the developers. 
+If you have any more questions don't hesitate to contact the developers. 
