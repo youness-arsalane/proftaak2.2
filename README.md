@@ -49,7 +49,7 @@ Deelopdracht: Maak een ontwerp volgens een gangbaar designpattern, architectuur 
 - [X] Broncode bevat precies voldoende zinvolle Javadoc en precies voldoende zinvol commentaar. Met “precies voldoende zinvol” wordt bedoeld dat Javadoc en commentaar toegevoegde waarde moeten hebben. Dat overdaad de leesbaarheid van de broncode niet ten goede komt. Dat met te weinig Javadoc en commentaar het heel veel moeite kost om de broncode te begrijpen.
 - [X] Er wordt door de app gebruik gemaakt van een eigen of een externe webservice/API naar keuze. De app is gebouwd volgens de tijdens de les aangeboden technieken voor Android realisatie. Er is local storage en er wordt gebruik gemaakt van minimaal 2 sensoren buiten touchscreen en standaard bedieningselementen om.
 - [X] Exception handling wordt ingezet waar dat nodig is.
-- [ ] Unit tests voor het testen van minimaal vijf verschillende functies/usecases .
+- [X] Unit tests voor het testen van minimaal vijf verschillende functies/usecases .
 - [ ] Er is een export bestand van de database(s) met de databasestructuur, maar ook data, indien nodig, zodat de vakdocent zelf de applicatie kan testen.
 
 ##### Documentatie
