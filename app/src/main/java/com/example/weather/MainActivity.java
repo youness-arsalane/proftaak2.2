@@ -2,7 +2,6 @@ package com.example.weather;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -11,7 +10,6 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,9 +28,9 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.weather.Adapter.ViewPagerAdapter;
-import com.example.weather.Common.Common;
-import com.example.weather.DBHandler.RecentSearchesDBHelper;
+import com.example.weather.adapter.ViewPagerAdapter;
+import com.example.weather.common.Common;
+import com.example.weather.dbHandler.RecentSearchesDBHelper;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;

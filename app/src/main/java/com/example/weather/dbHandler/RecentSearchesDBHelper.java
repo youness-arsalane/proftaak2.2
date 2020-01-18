@@ -1,4 +1,4 @@
-package com.example.weather.DBHandler;
+package com.example.weather.dbHandler;
 
 import android.content.ContentValues;
 import android.content.Context;

@@ -14,11 +14,11 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.weather.Adapter.ViewPagerAdapter;
-import com.example.weather.Common.Common;
-import com.example.weather.DBHandler.RecentSearchesDBHelper;
-import com.example.weather.Model.WeatherResult;
-import com.example.weather.Retrofit.IOpenWeatherMap;
+import com.example.weather.adapter.ViewPagerAdapter;
+import com.example.weather.common.Common;
+import com.example.weather.dbHandler.RecentSearchesDBHelper;
+import com.example.weather.model.WeatherResult;
+import com.example.weather.retrofit.IOpenWeatherMap;
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;

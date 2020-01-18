@@ -1,6 +1,6 @@
-package com.example.weather.Retrofit;
+package com.example.weather.retrofit;
 
-import com.example.weather.Model.WeatherResult;
+import com.example.weather.model.WeatherResult;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;

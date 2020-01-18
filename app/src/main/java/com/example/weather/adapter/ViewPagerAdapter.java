@@ -1,4 +1,4 @@
-package com.example.weather.Adapter;
+package com.example.weather.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

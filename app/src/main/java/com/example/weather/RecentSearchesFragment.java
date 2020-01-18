@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.weather.DBHandler.RecentSearchesDBHelper;
+import com.example.weather.dbHandler.RecentSearchesDBHelper;
 
 import java.util.Objects;
 
